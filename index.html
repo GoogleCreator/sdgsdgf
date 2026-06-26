@@ -3,323 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lua Shield - Protected Pastes</title>
+    <title>Lua Shield • Protected Paste</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
         
         :root {
-            --primary: #00ff9d;
             --bg: #0a0a0a;
-            --card: #111111;
+            --accent: #00ff9f;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
         
         body {
-            font-family: 'Inter', system_ui, sans-serif;
             background: var(--bg);
-            color: #eee;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            padding: 2rem;
-            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        .container { width: 100%; max-width: 720px; padding: 40px 20px; }
         
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
+        .card {
+            background: #111111;
+            border-radius: 16px;
+            border: 1px solid #222;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 255, 159, 0.08);
         }
         
         h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 3rem;
-            background: linear-gradient(90deg, #00ff9d, #00cc7a);
+            font-size: 42px;
+            text-align: center;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #00ff9f, #00cc7a);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
         }
         
-        .tagline {
-            color: #888;
-            font-size: 1.1rem;
-        }
-        
-        .card {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 2rem;
-            border: 1px solid #222;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 255, 157, 0.05);
-        }
+        .subtitle { text-align: center; color: #888; margin-bottom: 40px; font-size: 18px; }
         
         textarea {
             width: 100%;
-            min-height: 400px;
+            height: 320px;
             background: #1a1a1a;
             border: 1px solid #333;
             border-radius: 12px;
-            padding: 1.5rem;
-            color: #ddd;
-            font-family: 'Courier New', monospace;
-            font-size: 0.95rem;
+            padding: 20px;
+            color: #e0e0e0;
+            font-family: monospace;
+            font-size: 15px;
             resize: vertical;
+            margin-bottom: 20px;
         }
         
         button {
-            background: var(--primary);
+            background: var(--accent);
             color: #000;
             border: none;
-            padding: 14px 32px;
-            font-size: 1.1rem;
+            padding: 16px 32px;
+            font-size: 17px;
             font-weight: 600;
             border-radius: 12px;
             cursor: pointer;
+            width: 100%;
             transition: all 0.2s;
-            margin-top: 1rem;
         }
         
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 255, 157, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 255, 159, 0.3);
         }
         
-        .result {
-            display: none;
-            margin-top: 2rem;
-        }
+        .result { margin-top: 30px; display: none; }
         
         .link-box {
             background: #1a1a1a;
-            padding: 1.5rem;
+            border: 1px solid #00ff9f;
             border-radius: 12px;
-            border: 1px solid #00ff9d33;
+            padding: 20px;
             font-family: monospace;
+            font-size: 14px;
             word-break: break-all;
-            margin: 1rem 0;
-            position: relative;
+            margin-bottom: 16px;
+            color: #00ff9f;
         }
         
         .copy-btn {
-            position: absolute;
-            top: 12px;
-            right: 12px;
             background: #222;
-            color: var(--primary);
-            border: 1px solid #444;
-            padding: 6px 12px;
+            color: #00ff9f;
+            padding: 12px 24px;
             border-radius: 8px;
-            font-size: 0.85rem;
             cursor: pointer;
-        }
-        
-        .info {
-            background: #1a1a1a;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #aaa;
-            margin: 1.5rem 0;
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 4rem;
-            color: #555;
-            font-size: 0.9rem;
-        }
-        
-        .nav {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-        
-        .nav a {
-            color: #888;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 9999px;
-            transition: all 0.2s;
-        }
-        
-        .nav a.active, .nav a:hover {
-            background: #222;
-            color: var(--primary);
+            font-weight: 500;
+            width: 100%;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
+        <div class="card">
             <h1>Lua Shield</h1>
-            <p class="tagline">Protect your Lua scripts • Share via loadstring</p>
-        </header>
-
-        <div class="nav">
-            <a href="#" onclick="showTab(0)" class="active" id="tab0">Create Paste</a>
-            <a href="#" onclick="showTab(1)" id="tab1">View Paste</a>
-        </div>
-
-        <!-- Create Tab -->
-        <div id="create-tab" class="card">
-            <h2 style="margin-bottom: 1rem; color: #00ff9d;">Paste your Lua code</h2>
-            <textarea id="code-input" placeholder="function hello() print('Protected Lua!') end"></textarea>
+            <p class="subtitle">Your code stays hidden in the URL hash</p>
             
-            <button onclick="createPaste()">PROTECT &amp; GENERATE LINK</button>
+            <textarea id="codeInput" placeholder="Paste your Lua code here..."></textarea>
             
-            <div id="create-result" class="result">
-                <h3>Your Protected Loadstring:</h3>
-                <div class="link-box" id="loadstring-box">
-                    <span id="loadstring-text">loadstring(game:HttpGet("https://yourdomain.com/paste#abc123"))()</span>
-                    <button class="copy-btn" onclick="copyLoadstring()">Copy</button>
-                </div>
+            <button onclick="protectCode()">PROTECT CODE & GENERATE LINK</button>
+            
+            <div id="result" class="result">
+                <div style="color:#00ff9f; text-align:center; margin:15px 0;">🔒 Code protected in URL hash</div>
                 
-                <div class="info">
-                    <strong>How it works:</strong><br>
-                    • Your code is encoded and embedded in the URL hash.<br>
-                    • The paste page cannot be viewed in browser without the hash.<br>
-                    • Only loadstring() can fetch and execute it securely in Lua environments (Roblox, etc.).
-                </div>
+                <p style="margin:20px 0 10px 0; color:#aaa;">Loadstring to share:</p>
+                <div id="loadstringBox" class="link-box"></div>
                 
-                <button onclick="resetForm()" style="background:#333; color:#ccc;">Create New Paste</button>
+                <button class="copy-btn" onclick="copyLoadstring()">📋 Copy Loadstring</button>
             </div>
-        </div>
-
-        <!-- View Tab -->
-        <div id="view-tab" class="card" style="display: none;">
-            <h2 style="margin-bottom: 1rem; color: #00ff9d;">Load Protected Paste</h2>
-            <p>Paste the full URL or just the hash part below:</p>
-            <input type="text" id="view-input" placeholder="https://...#encodedcode or just the hash" 
-                   style="width:100%; padding:1rem; background:#1a1a1a; border:1px solid #333; border-radius:12px; color:#ddd; margin-bottom:1rem;">
-            <button onclick="loadPaste()">DECODE &amp; VIEW (for testing)</button>
-            
-            <div id="paste-content" class="result" style="margin-top:2rem;">
-                <h3>Decoded Lua Code:</h3>
-                <pre id="decoded-code" style="background:#1a1a1a; padding:1.5rem; border-radius:12px; overflow:auto; max-height:500px; white-space:pre-wrap; font-family:monospace;"></pre>
-            </div>
-        </div>
-
-        <div class="footer">
-            <p>Demo version - Code is encoded with Base64 + simple obfuscation.<br>
-            For production, host on a real server with backend storage.</p>
         </div>
     </div>
 
     <script>
         function encodeCode(code) {
-            // Simple protection: Base64 + reverse + some padding
-            let encoded = btoa(code);
-            // Add a bit more obfuscation
-            encoded = encoded.split('').reverse().join('');
-            return encoded;
+            const b64 = btoa(unescape(encodeURIComponent(code)));
+            return b64.split('').reverse().join('');
         }
         
         function decodeCode(encoded) {
             try {
-                let rev = encoded.split('').reverse().join('');
-                return atob(rev);
-            } catch(e) {
-                return "Invalid paste data.";
-            }
+                const b64 = encoded.split('').reverse().join('');
+                return decodeURIComponent(escape(atob(b64)));
+            } catch(e) { return null; }
         }
         
-        function createPaste() {
-            const code = document.getElementById('code-input').value.trim();
-            if (!code) {
-                alert("Please enter some Lua code!");
-                return;
-            }
+        function protectCode() {
+            const input = document.getElementById('codeInput').value.trim();
+            if (!input) return alert("Paste your Lua code first!");
             
-            const encoded = encodeCode(code);
-            const pasteId = 'paste_' + Math.random().toString(36).substring(2, 15);
+            const encoded = encodeCode(input);
+            const baseUrl = window.location.href.split('#')[0];
+            const fullLink = baseUrl + '#' + encoded;
             
-            // For demo, we'll use URL hash
-            const baseUrl = window.location.origin + window.location.pathname;
-            const fullUrl = `${baseUrl}#${encoded}`;
+            const loadstring = `loadstring(game:HttpGet("${fullLink}"))()`;
             
-            const loadstring = `loadstring(game:HttpGet("${baseUrl}#${encoded}"))()`;
-            
-            document.getElementById('loadstring-text').textContent = loadstring;
-            document.getElementById('create-result').style.display = 'block';
-            
-            // Auto copy to clipboard suggestion
-            console.log('Protected paste created:', fullUrl);
+            document.getElementById('loadstringBox').textContent = loadstring;
+            document.getElementById('result').style.display = 'block';
         }
         
         function copyLoadstring() {
-            const text = document.getElementById('loadstring-text').textContent;
+            const text = document.getElementById('loadstringBox').textContent;
             navigator.clipboard.writeText(text).then(() => {
                 const btn = document.querySelector('.copy-btn');
                 const orig = btn.textContent;
-                btn.textContent = 'Copied!';
-                setTimeout(() => btn.textContent = orig, 2000);
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => btn.textContent = orig, 1800);
             });
         }
         
-        function resetForm() {
-            document.getElementById('code-input').value = '';
-            document.getElementById('create-result').style.display = 'none';
-        }
-        
-        function showTab(tab) {
-            document.getElementById('create-tab').style.display = tab === 0 ? 'block' : 'none';
-            document.getElementById('view-tab').style.display = tab === 1 ? 'block' : 'none';
-            
-            document.querySelectorAll('.nav a').forEach((el, i) => {
-                el.classList.toggle('active', i === tab);
-            });
-        }
-        
-        function loadPaste() {
-            let input = document.getElementById('view-input').value.trim();
-            let hash = '';
-            
-            if (input.includes('#')) {
-                hash = input.split('#')[1];
-            } else {
-                hash = input;
-            }
-            
-            if (!hash) {
-                alert("Please provide a hash or full URL");
-                return;
-            }
-            
-            const decoded = decodeCode(hash);
-            document.getElementById('decoded-code').textContent = decoded;
-            document.getElementById('paste-content').style.display = 'block';
-        }
-        
-        // Handle direct hash access (for loadstring simulation)
-        window.onload = function() {
+        // Auto run when hash is present (for loadstring)
+        window.onload = () => {
             const hash = window.location.hash.substring(1);
             if (hash) {
-                // Auto switch to view tab and load
-                showTab(1);
-                const decoded = decodeCode(hash);
-                document.getElementById('decoded-code').textContent = decoded;
-                document.getElementById('paste-content').style.display = 'block';
-                document.getElementById('view-input').value = window.location.href;
+                const code = decodeCode(hash);
+                if (code) {
+                    // In Roblox this would run: load(code)()
+                    console.log("%c🔓 Protected Lua code loaded successfully", "color:#00ff9f;font-size:14px");
+                    // For preview in browser:
+                    alert("Protected code loaded!\n\nCheck console for full code.");
+                    console.log(code);
+                }
             }
         };
-        
-        // Keyboard support
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.key === 'Enter') {
-                const activeTab = document.getElementById('create-tab').style.display !== 'none' ? 0 : 1;
-                if (activeTab === 0) createPaste();
-            }
-        });
     </script>
 </body>
 </html>
